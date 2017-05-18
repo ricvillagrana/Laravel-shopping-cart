@@ -16,8 +16,10 @@ class Clientes extends Migration
         Schema::create('clientes',function(Blueprint $table){
             $table->increments('id');
             $table->string('nombre');
+            $table->string('apellido');
             $table->string('correo')->unique();
             $table->string('telefono')->unique();
+            $table->string('password');
             $table->timestamps();
         });
     }

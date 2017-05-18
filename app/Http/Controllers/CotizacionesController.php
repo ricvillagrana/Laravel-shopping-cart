@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\MoneyParser;
 use App\Categorias;
+use App\Session;
 
 class CotizacionesController extends Controller
 {
@@ -13,11 +14,7 @@ class CotizacionesController extends Controller
 
 	public function __construct(){
 		$this->shoppingCart = new ShoppingCart();
-		$this->global_data = (object) array(
-	                             'amount' =>  MoneyParser::parseFancy($this->shoppingCart->getAmount()),
-	                             'cant' => $this->shoppingCart->getAmount(),
-	                             'categorias' => Categorias::all()
-	                             );
+		$this->global_data = Session::getData();
 	}
     public function index(){
 

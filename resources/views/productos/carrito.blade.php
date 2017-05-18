@@ -4,6 +4,11 @@
 
 <div class="panel panel-default clearfix">
 	<div class="panel-heading">
+
+		
+		<button class="btn btn-primary pull-right"><i class="fa fa-paypal"></i> Pagar con PayPal</button><br><br>
+		<button class="btn btn-primary pull-right"><i class="fa fa-credit-card"></i> Pagar con Stripe</button>
+
 		<h3 class="panel-title">Tu carrito (
 			@if($carrito)
 				<r id="products-amount">{{ count($carrito) }}</r>
@@ -11,7 +16,8 @@
 				<r id="products-amount">{{ 0 }}</r>
 			@endif
 			artículos )</h3>
-		</div>
+			<h1 class="price">TOTAL: {{ $data->amount }}</h1>
+		</div> 
 		<div style="display: block;" id="si-carrito" class="panel-body">
 			@if($carrito)
 			@foreach($carrito as $producto)

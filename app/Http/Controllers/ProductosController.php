@@ -8,6 +8,7 @@ use App\MoneyParser;
 use App\Productos;
 use App\view_productos_cat;
 use App\Categorias;
+use App\Session;
 
 class ProductosController extends Controller
 {
@@ -15,12 +16,9 @@ class ProductosController extends Controller
 	private $shoppingCart;
 	private $global_data;
 
-	public function __construct(){
+	public function __construct(Request $request){
 		$this->shoppingCart = new ShoppingCart();
-		$this->global_data = (object) array(
-	                             'amount' =>  MoneyParser::parseFancy($this->shoppingCart->getAmount()),
-	                             'categorias' => Categorias::all()
-	                             );
+		$this->global_data = Session::getData();
 	}
     public function index(){
         $productos = Productos::all();

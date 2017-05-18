@@ -47,13 +47,19 @@
         <ul class="nav navbar-nav navbar-right">
           <li class="dropdown">
             <a href="#" class="dropdown-toggle" style="font-size: 1.5em;" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-              <i class="fa fa-shopping-cart"></i> <r id="amount-total" class="money-color">{{ $data->amount }}</r><span class="caret"></span></a>
+              <i class="fa fa-user-circle"></i> {{ ($data->session != null) ? $data->session->nombre : "Inicia sessión" }}</a>
               <ul class="dropdown-menu">
-                <li><a href="/productos/carrito">Ver carrito</a></li>
-                <li><a id="del-cart">Vaciar carrito</a></li>
-                <li><a href="#">Hacer pago</a></li>
+                <li><a href="/productos/carrito"><i class="fa fa-shopping-cart"></i> Ver carrito <span class="badge"><r id="amount-total" class="money-color">{{ $data->amount }}</r></span></a></li>
+                <li><a id="del-cart"><i class="fa fa-window-close"></i> Vaciar carrito</a></li>
+                <!--<li><a href="#">Hacer pago</a></li>-->
                 <li role="separator" class="divider"></li>
-                <li><a href="#"><i class="fa fa-save"></i> Guardar carrito</a></li>
+                @if($data->session != null)
+                  <li><a href="/cliente/profile"><i class="fa fa-user"></i> {{ $data->session->nombre . " " . $data->session->apellido }}</a></li>
+                  <li><a href="/cliente/signout"><i class="fa fa-sign-out"></i> Cerrar sesión</a></li>
+                @else
+                  <li><a href="/cliente/signin"><i class="fa fa-sign-in"></i> Iniciar sesión</a></li>
+                  <li><a href="/cliente/signup"><i class="fa fa-edit"></i> Registro</a></li>
+                @endif
               </ul>
             </li>
           </ul>

@@ -71,7 +71,7 @@ a{
 .footer{
 	background: $footer_color;
 	color: white;
-	bottom: 0;
+	bottom: 0px;
 	left: 0;
 	width: 100%;
 	height: 350px;
@@ -79,9 +79,11 @@ a{
 .content-all{
 	padding-bottom: 10%;
 }
-label{
-	font-weight: lighter;
-}
+
 .white{
 	color:white;
+}
+.centered{
+	position: relative;
+	text-align: center;
 }
