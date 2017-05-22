@@ -1,6 +1,18 @@
 $(document).ready(function(){
 
 	//
+	//Search
+	//
+	$('#search-button').on('click',function(){
+		window.location.replace("/productos/buscar/" + $('#query-search').val())
+	});
+	$('#query-search').keypress(function (e) {
+	  if (e.which == 13) {
+	  	window.location.replace("/productos/buscar/" + $('#query-search').val())
+	  }
+	});
+
+	//
 	//	Añade al carrito de compra y manda notificación de ello
 	//
 	$('.add-cart').on('click',function(){
@@ -9,10 +21,14 @@ $(document).ready(function(){
 			cant = 1; // Catidad default 1 por si no está en la vista producto.ver
 		$.get( "/ajax/addCart/"+$(this).attr('id')+"/"+cant).done(function( data ) { // Función AJAX hacia el controlador ShoppingCart
 			$('#amount-total').html(data);
-			if(cant>1)
-				notify("Carrito",cant+" productos agregados.","success")
-			else
-				notify("Carrito","Producto agregado.","success")
+			if(data=="nouser"){
+				notify("Sesión","Debes iniciar sesión primero.","error")
+			}else{
+				if(cant>1)
+					notify("Carrito",cant+" productos agregados.","success")
+				else
+					notify("Carrito","Producto agregado.","success")
+			}
 		});
 	})
 	//

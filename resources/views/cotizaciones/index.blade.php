@@ -32,6 +32,25 @@
       <input class="magic-radio" type="radio" name="tipo_pasta" id="tipo_pasta_delgada"><label for="tipo_pasta_delgada">Pasta delgada</label>
       <input class="magic-radio" type="radio" name="tipo_pasta" id="tipo_pasta_calidad"><label for="tipo_pasta_calidad">Pasta de calidad otográica</label>
     </div>
+
+
+    <h2><i class="fa fa-dot-circle-o"></i> Impresión de interiores</h2>
+    <h4>Blanco/Negro</h4>
+    <label for="">Color de hoaja</label><input class="form-control" type="number" value="0" min="0" max="999" name="bn_cantidad">
+    <label for="">Tipo de hoja</label><select class="form-control" name="bn_cantidad">
+      <option>Delgado</option>
+      <option>Grueso</option>
+    </select>
+
+    <h4>Color</h4>
+    <label for="">Tipo de hoja</label>
+    <input class="form-control" type="number" value="0" min="0" max="999" name="color_cantidad">
+    <label for="">Tipo de hoja</label>
+    <select class="form-control" name="color_cantidad">
+      <option>Delgado</option>
+      <option>Grueso</option>
+    </select>
+
   {!! Form::close() !!}
 </div>
 @endsection

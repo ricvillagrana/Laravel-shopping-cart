@@ -28,12 +28,12 @@
         <a class="navbar-brand" href="/">Al Libro Mayor</a>
       </div>
 
-      <!-- Collect the nav links, forms, and other content for toggling -->
+      <!-- Collect the nav links, forms, and ot her content for toggling -->
       <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
         <ul class="nav navbar-nav">
           <li><a href="/">Inicio <span class="sr-only">(current)</span></a></li>
-          <li><a href="/cotizacion">Cotizar</a></li>
-          <li class="dropdown">
+          <!-- <li><a href="/cotizacion">Cotizar</a></li> -->
+         <li class="dropdown">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Productos <span class="caret"></span></a>
             <ul class="dropdown-menu">
             @foreach($data->categorias as $cat)
@@ -43,18 +43,29 @@
               <li><a href="/productos">Ver todo</a></li>
             </ul>
           </li>
+           <!-- Búsqueda -->
+
+          <div class="navbar-form navbar-left">
+            <div class="form-group">
+              <input id="query-search" type="text" name="query" class="form-control" placeholder="Buscar">
+            </div>
+            <a id="search-button" class="btn btn-default">Buscar</a>
+          </div>
         </ul>
         <ul class="nav navbar-nav navbar-right">
           <li class="dropdown">
             <a href="#" class="dropdown-toggle" style="font-size: 1.5em;" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-              <i class="fa fa-user-circle"></i> {{ ($data->session != null) ? $data->session->nombre : "Inicia sessión" }}</a>
+              <i class="fa fa-user-circle"></i> {{ ($data->session != null) ? $data->session->nombre : "Inicia sesión" }}</a>
               <ul class="dropdown-menu">
-                <li><a href="/productos/carrito"><i class="fa fa-shopping-cart"></i> Ver carrito <span class="badge"><r id="amount-total" class="money-color">{{ $data->amount }}</r></span></a></li>
-                <li><a id="del-cart"><i class="fa fa-window-close"></i> Vaciar carrito</a></li>
-                <!--<li><a href="#">Hacer pago</a></li>-->
-                <li role="separator" class="divider"></li>
+                @if($data->session != null)
+                  <li><a href="/productos/carrito"><i class="fa fa-shopping-cart"></i> Ver carrito <span class="badge"><r id="amount-total" class="money-color">{{ $data->amount }}</r></span></a></li>
+                  <li><a id="del-cart"><i class="fa fa-window-close"></i> Vaciar carrito</a></li>
+                  <!--<li><a href="#">Hacer pago</a></li>-->
+                  <li role="separator" class="divider"></li>
+                @endif
                 @if($data->session != null)
                   <li><a href="/cliente/profile"><i class="fa fa-user"></i> {{ $data->session->nombre . " " . $data->session->apellido }}</a></li>
+                  <!--<li><a href="/cliente/seguimiento"><i class="fa fa-gear fa-spin"></i> Seguimiento</a></li>-->
                   <li><a href="/cliente/signout"><i class="fa fa-sign-out"></i> Cerrar sesión</a></li>
                 @else
                   <li><a href="/cliente/signin"><i class="fa fa-sign-in"></i> Iniciar sesión</a></li>
@@ -69,7 +80,7 @@
     <div class="container content-all">
     @yield('content')
     </div>
-
+    
     <div class="footer container">
       <div class="col-xs-12 col-sm-6 col-md-6">
         <h1>Acerca de</h1>

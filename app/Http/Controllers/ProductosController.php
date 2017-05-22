@@ -9,30 +9,26 @@ use App\Productos;
 use App\view_productos_cat;
 use App\Categorias;
 use App\Session;
+use App\Cart;
+use App\Cart_details;
 
 class ProductosController extends Controller
 {
-	// $shoppingCart variable for ShoppingCart class
-	private $shoppingCart;
+	// $shoppingCart variable for ShoppingCart Controller
+	private $cart;
 	private $global_data;
 
 	public function __construct(Request $request){
-		$this->shoppingCart = new ShoppingCart();
+		$this->cart = Cart::where('id_cliente', Session::get('cliente'));
 		$this->global_data = Session::getData();
 	}
     public function index(){
         $productos = Productos::all();
-        if($this->shoppingCart->getProducts() != null)
-        foreach ($productos as $key) {
-           if(in_array($key->id, array_keys($this->shoppingCart->getProducts()))){
-                $key->inCart = true;
-           }
-       }
     	return view('productos.index')
     	            ->with('productos', $productos)
     	            ->with('data', $this->global_data);
     }
-    public function viewAll(){
+    /*public function viewAll(){
         $productos = Productos::all()->orderBy('created_at', 'desc')->get();
         if($this->shoppingCart->getProducts() != null)
         foreach ($productos as $key) {
@@ -43,19 +39,24 @@ class ProductosController extends Controller
         return view('productos.index')
                     ->with('productos', $productos)
                     ->with('data', $this->global_data);
-    }
+    }*/
     public function viewCategorie($categoria){
         $productos = view_productos_cat::all()->where('nombre',$categoria);
-        if($this->shoppingCart->getProducts() != null)
-        foreach ($productos as $key) {
-            if(in_array($key->id, array_keys($this->shoppingCart->getProducts()))){
-                $key->inCart = true;
-            }
-        }
+        
         return view('productos.categoria')
                     ->with('productos', $productos)
                     ->with('data', $this->global_data)
                     ->with('cat', $categoria);
+    }
+    public function search($query){
+        $productos = Productos::where('nombre', 'ilike', '%'.$query.'%')
+            ->orWhere('descripcion', 'ilike', '%'.$query.'%')
+            ->get();
+        
+        return view('productos.search-result')
+                    ->with('productos', $productos)
+                    ->with('data', $this->global_data)
+                    ->with('query', $query);
     }
     public function showProducto($id){
     	return view('productos.producto')
@@ -63,17 +64,17 @@ class ProductosController extends Controller
     	            ->with('data', $this->global_data);
     }
     public function showCart(){
-    	$sh = new ShoppingCart;
-    	$products = $sh->getProducts();
-        if($products != null){
-            $keys = array_keys($products);
-            foreach ($keys as $key) {
-                $productos[$key] = Productos::find($key);
-                $productos[$key]->cantidad = $products[$key];
-                $productos[$key]->total = MoneyParser::parseFancy($productos[$key]->cantidad * $productos[$key]->precio);
+        if(!Session::logedIn('cliente'))
+            return redirect('/cliente/signin');
+        $productos = Cart_details::where('id_cliente', Session::get('cliente'))->get();
+        if($productos->count() != 0){
+            foreach ($productos as $producto) {
+                $producto->total = MoneyParser::parseFancy($producto->precio*$producto->cantidad);
+                $producto->precioF = MoneyParser::parseFancy($producto->precio);
             }
         }else
             $productos = false;
+        //dd($productos);
     	return view('productos.carrito')
     	            ->with('carrito', $productos)
     	            ->with('data', $this->global_data);

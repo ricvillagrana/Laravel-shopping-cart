@@ -4,10 +4,21 @@
 
 <div class="panel panel-default clearfix">
 	<div class="panel-heading">
+		@if(isset($carrito) && $carrito != null)
+		<form target="_blank" action="https://www.paypal.com/cgi-bin/webscr" method="post">
 
-		
-		<button class="btn btn-primary pull-right"><i class="fa fa-paypal"></i> Pagar con PayPal</button><br><br>
-		<button class="btn btn-primary pull-right"><i class="fa fa-credit-card"></i> Pagar con Stripe</button>
+			<input type="hidden" name="cmd" value="_cart">
+			<input type="hidden" name="upload" value="1">
+			<input type="hidden" name="business" value="rikrc.d-facilitator@gmail.com">
+			<input type="hidden" name="currency_code" value="MXN">
+			@foreach($carrito as $producto)
+				<input type="hidden" name="item_name_{{ $loop->iteration }}" value="{{ $producto->nombre }}">
+				<input type="hidden" name="amount_{{ $loop->iteration }}" value="{{ $producto->precio }}">
+				<input type="hidden" name="quantity_{{ $loop->iteration }}" value="{{ $producto->cantidad }}">
+			@endforeach
+			<button class="btn btn-primary pull-right" type="submit" value="PayPal"><i class="fa fa-paypal"></i> Pagar con PayPal</button>
+		</form>
+		@endif
 
 		<h3 class="panel-title">Tu carrito (
 			@if($carrito)
@@ -30,7 +41,11 @@
 			    </div>
 		          <div class="caption clearfix">
 		            <h4>{{ Html::link('/productos/ver/'.$producto->id, $producto->nombre) }}</h4>
-		            <p class="price">{{ $producto->getPrecio() }} x {{ $producto->cantidad }} = <b>{{ $producto->total }}</b></p>
+		            <p >
+		            	Precio unitario: {{ $producto->precioF }}<br>
+		            	Cantidad: {{ $producto->cantidad }}<br>
+		            	Total: <b class="price">{{ $producto->total }}</b>
+		            </p>
 		            <a href="/productos/ver/{{ $producto->id }}" class="btn btn-default pull-right btn-block btn-xlarge" role="button"> <i class="fa fa-info-circle"></i> Detalles</a>
 		            <a id={{ $producto->id }} class="btn btn-warning pull-right edit-product btn-block btn-xlarge" role="button"> <i class="fa fa-edit"></i> Editar</a>
 		            </div>

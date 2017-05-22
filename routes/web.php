@@ -18,6 +18,7 @@ Route::get('/productos/lista', 'ProductosController@index');
 Route::get('/productos/carrito', 'ProductosController@showCart');
 Route::get('/productos/categoria/{id}', 'ProductosController@showCategoria');
 Route::get('/productos/{categoria}', 'ProductosController@viewCategorie');
+Route::get('/productos/buscar/{query}', 'ProductosController@search');
 
 Route::get('/cotizacion', 'CotizacionesController@index');
 Route::get('/cotizacion/nueva', 'CotizacionesController@index');

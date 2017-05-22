@@ -22,7 +22,10 @@ class Session extends Model
     public static function get($name){
     	if(!isset($_SESSION))	
     		session_start();
-    	return $_SESSION[$name];
+    	if(isset($_SESSION[$name]))
+            return $_SESSION[$name];
+        else
+            return null;
     }
     public static function logedIn($name){
     	if(!isset($_SESSION))	
@@ -39,6 +42,7 @@ class Session extends Model
         $shoppingCart = new ShoppingCart();
         return (object) array(
                 'amount' =>  MoneyParser::parseFancy($shoppingCart->getAmount()),
+                'flatAmount' =>  $shoppingCart->getAmount(),
                 'categorias' => Categorias::all(),
                 'session' => (Session::logedIn('cliente')) ? Clientes::find(Session::get('cliente')) : null
             );

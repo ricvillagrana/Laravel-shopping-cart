@@ -30,12 +30,12 @@ class ClientesController extends Controller
 	}
 	public function create(ClienteRules $request){
 		$cliente = new Clientes();
-		$cliente->nombre = $request->nombre;
-		$cliente->apellido = $request->apellido;
-		$cliente->correo = $request->correo;
-		$cliente->telefono = $request->telefono;
-		$cliente->password = hash('sha256', $request->password);
-		if($request->password == $request->password_confirmation){
+		$cliente->nombre 		= $request->nombre;
+		$cliente->apellido 		= $request->apellido;
+		$cliente->correo 		= $request->correo;
+		$cliente->telefono 		= $request->telefono;
+		$cliente->password 		= hash('sha256', $request->password);
+		if($request->password 	== $request->password_confirmation){
 			$cliente->save();
 
 			Session::set('cliente', Clientes::where('correo', $cliente->correo)->get()[0]->id);
