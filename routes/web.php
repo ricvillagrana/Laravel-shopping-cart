@@ -41,4 +41,19 @@ Route::get('/ajax/addCart/{id}/{cant}', 'ShoppingCart@addProduct');
 Route::get('/ajax/delCart', 'ShoppingCart@delCart');
 Route::get('/ajax/editProduct/{id}/{cant}', 'ShoppingCart@editProduct');
 Route::get('/ajax/deleteProduct/{id}', 'ShoppingCart@deleteProduct');
+Route::get('/ajax/getRank/{id}','ProductosController@getRank');
+// Administration routes
+// 
 
+
+CRUD::resource('tag', 'TagCrudController');
+Route::group(['prefix' => 'admin', 'middleware' => ['admin'], 'namespace' => 'Admin'], function()
+{
+   CRUD::resource('tag', 'TagCrudController');
+});
+Route::group(['prefix' => config('backpack.base.route_prefix', 'admin'), 'middleware' => ['web', 'auth']], function () {
+    CRUD::resource('productos', 'Admin\ProductosCrudController');
+});
+Route::group(['prefix' => config('backpack.base.route_prefix', 'admin'), 'middleware' => ['web', 'auth']], function () {
+    CRUD::resource('categorias', 'Admin\CategoriasCrudController');
+});

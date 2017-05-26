@@ -18,6 +18,8 @@ class Productos extends Migration
             $table->integer('id_categoria');
             $table->string('nombre');
             $table->decimal('precio',10,3);
+            $table->integer('cantMax');
+            $table->integer('cantMin');
             $table->text('descripcion');
             $table->timestamps();
 

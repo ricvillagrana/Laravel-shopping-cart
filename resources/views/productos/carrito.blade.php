@@ -68,11 +68,7 @@
 				<p>ID del producto: <r id="product-id"></r></p>
 				<p>Puedes editar la cnatidad o eliminar el producto.</p>
 				<label for="cantidad">Cantidad:</label>
-		          <select id="cantidad-product" class="form-control" name="cantidad">
-			          @for($i = 1; $i <= 50; $i++)
-			            <option id="cantidad-product-{{ $i }}" value="{{ $i }}">{{ $i }}</option>
-			          @endfor
-		          </select>
+		          <input class="form-control" id="cantidad-product" type="number" name="quantity" min="1" max="1" value="1">
 		          <br>
 		          <a class="product-edited btn btn-success"><i class="fa fa-check"></i> Editar</a>
 		          <a class="product-deleted btn btn-danger"><i class="fa fa-remove"></i> Eliminar</a>

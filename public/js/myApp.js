@@ -20,14 +20,21 @@ $(document).ready(function(){
 		if(cant == null)
 			cant = 1; // Catidad default 1 por si no está en la vista producto.ver
 		$.get( "/ajax/addCart/"+$(this).attr('id')+"/"+cant).done(function( data ) { // Función AJAX hacia el controlador ShoppingCart
-			$('#amount-total').html(data);
 			if(data=="nouser"){
 				notify("Sesión","Debes iniciar sesión primero.","error")
 			}else{
-				if(cant>1)
-					notify("Carrito",cant+" productos agregados.","success")
-				else
-					notify("Carrito","Producto agregado.","success")
+				var last = data.charAt(data.length-1);
+				if(last == 'E'){
+					data = data.slice(0, data.length-1);
+					notify("Carrito","Haz llegado al límite de este producto en tu carrito","warning")
+				}
+				else{
+					if(cant>1)
+						notify("Carrito",cant+" productos agregados.","success")
+					else
+						notify("Carrito","Producto agregado.","success")
+				}
+				$('#amount-total').html(data);
 			}
 		});
 	})
@@ -35,6 +42,11 @@ $(document).ready(function(){
 	//	Pasa el ID a la vista de edición para poder ser modificado previamente
 	//
 	$('.edit-product').on('click', function(){
+		$.get( "/ajax/getRank/"+$(this).attr('id')).done(function( data ) { // Función AJAX hacia el controlador ShoppingCart
+			var rank = data.split(',');
+			$('#cantidad-product').attr('min',rank[0]+1);
+			$('#cantidad-product').attr('max',rank[1]);
+		});
 		$('.delete-hide').css('display','block')
 		$('#product-id').text($(this).attr('id'))
 		$('.product-edited').attr('id',$(this).attr('id'))		// El ID se le asigna al botón Editar para ser usado al accionarlo

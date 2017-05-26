@@ -31,8 +31,7 @@ class ShoppingCart extends Controller
         return $total;
     }
     public function delCart(){
-        $product = Cart::where('id_cliente', Session::get('cliente'))->get();
-        $product->delete();
+        Cart::where('id_cliente', Session::get('cliente'))->delete();
         /*if(!isset($_SESSION))
             session_start();
         $_SESSION['cart'] = null;*/
@@ -40,7 +39,14 @@ class ShoppingCart extends Controller
     }
     public function editProduct($id, $cant){
         $product = Cart::find(Session::get('cliente').$id);
-        $product->cantidad = $cant;
+        $article = Productos::find($id);
+        if($article->cant_max >= $cant)
+            $product->cantidad = $cant;
+        else{
+            $product->cantidad = $article->cant_max;
+            $product->save();
+            return MoneyParser::parseFancy($this->getAmount())."E";
+        }
         $product->save();
         /*if(!isset($_SESSION))
             session_start();
@@ -70,16 +76,25 @@ class ShoppingCart extends Controller
             return "nouser";
         }
         $product = Cart::find(Session::get('cliente').$id);
-        //dd($product);
+        $article = Productos::find($id);
         if(!isset($product)){
+            if($article->cant_max < $cant)
+                return MoneyParser::parseFancy($this->getAmount())."E";
             $product = new Cart();
             $product->id_cliente = Session::get('cliente');
             $product->id_producto = $id;
             $product->id = $product->id_cliente.$product->id_producto;
             $product->cantidad = $cant;
+
         }else{
+            if($article->cant_max < $cant+$product->cantidad){
+                $product->cantidad = $article->cant_max;
+                $product->save();
+                return MoneyParser::parseFancy($this->getAmount())."E";
+            }
             $product->cantidad += $cant;
         }
+        
         $product->save(); 
         /* OLD VERSION
         if(!isset($_SESSION))

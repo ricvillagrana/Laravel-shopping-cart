@@ -17,11 +17,7 @@
       <div class="row">
         <div class="col-xs-3 col-sm-3 col-md-2">
           <label for="cantidad">Cantidad:</label>
-          <select id="cantidad-product" class="form-control" name="cantidad">
-          @for($i = 1; $i <= 50; $i++)
-            <option value="{{ $i }}">{{ $i }}</option>
-          @endfor
-          </select>
+          <input class="form-control" id="cantidad-product" type="number" name="quantity" min={{ $producto->cant_min+1 }} max={{ $producto->cant_max }} value="1">
         </div>
       </div>
       <div class="row">

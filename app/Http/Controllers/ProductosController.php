@@ -28,18 +28,10 @@ class ProductosController extends Controller
     	            ->with('productos', $productos)
     	            ->with('data', $this->global_data);
     }
-    /*public function viewAll(){
-        $productos = Productos::all()->orderBy('created_at', 'desc')->get();
-        if($this->shoppingCart->getProducts() != null)
-        foreach ($productos as $key) {
-            if(in_array($key->id, array_keys($this->shoppingCart->getProducts()))){
-                $key->inCart = true;
-            }
-        }
-        return view('productos.index')
-                    ->with('productos', $productos)
-                    ->with('data', $this->global_data);
-    }*/
+    public function getRank($id){
+        $producto = Productos::find($id);
+        echo $producto->cant_min.",".$producto->cant_max;
+    }
     public function viewCategorie($categoria){
         $productos = view_productos_cat::all()->where('nombre',$categoria);
         
